@@ -1,0 +1,58 @@
+package com.example.demo.controller;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+
+import org.springframework.web.bind.annotation.*;
+
+
+import com.example.demo.model.OrderDTO;
+import com.example.demo.model.OrderManagement;
+import com.example.demo.repository.AdministratorRepository;
+import com.example.demo.service.OrderService;
+@RestController
+@RequestMapping("/apiOrder")
+public class OrderController {
+	@Autowired
+    private  OrderService orderService;
+	private AdministratorRepository rep;
+    
+    
+
+    @PostMapping("/createOrder")
+    @ResponseBody
+    public String createOrder(@RequestBody OrderDTO orderDTO) {
+        
+            orderService.createOrder(orderDTO);
+            return "Order created successfully.";
+       
+    }
+    
+
+    @PutMapping("/updateOrder/{orderId}")
+    public String updateOrder(@PathVariable Long orderId, @RequestBody OrderDTO orderDTO) {
+        try {
+             return orderService.updateOrder(orderId, orderDTO);
+        } catch (RuntimeException e) {
+            return e.getMessage();
+        }
+    }
+
+    @DeleteMapping("/cancelOrder/{orderId}")
+    public String cancelOrder(@PathVariable Long orderId) {
+        try {
+            return orderService.cancelOrder(orderId);
+        } catch (RuntimeException e) {
+            return e.getMessage();
+        }
+    }
+
+    @GetMapping("/allOrder")
+    public List<OrderManagement> getAllOrders() {
+    	 return orderService.getAllOrders();
+       
+    }
+    
+}
+

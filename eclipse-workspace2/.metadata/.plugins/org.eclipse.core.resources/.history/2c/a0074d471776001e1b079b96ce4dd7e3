@@ -1,0 +1,38 @@
+package com.example.demo.controller;
+
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.web.bind.annotation.*;
+import com.example.demo.model.Administrator;
+import com.example.demo.service.AdministratorService;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api")
+public class AdministratorController {
+	 @Autowired
+    private  AdministratorService administratorService;
+
+    
+
+    @GetMapping("/allAdm")
+    public List<Administrator>getAdministrators() {
+        return administratorService.getAllAdministrators();
+        
+    }
+
+    @GetMapping("allAdministrators/{id}")
+    public Administrator getAdministratorById(@PathVariable("id") Long id) {
+         return administratorService.getAdministratorById(id);
+         
+    }
+
+    @GetMapping("/byAdministratorName/{name}")
+    public List<Administrator> getAdministratorByUsername(@PathVariable("name") String name) {
+        return administratorService.getAdministratorsByUsername(name);
+        
+    }
+}
+

@@ -1,0 +1,5 @@
+package comdemo.hibernate.entities.Employee;
+
+public class Employee {
+
+}

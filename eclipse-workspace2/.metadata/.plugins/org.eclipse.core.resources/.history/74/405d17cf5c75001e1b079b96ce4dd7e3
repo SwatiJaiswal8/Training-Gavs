@@ -1,0 +1,36 @@
+package com.example.demo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.service.CurrencyConversionService;
+import com.example.demo.service.CurrencyNotFoundException;
+
+@RestController
+@RequestMapping("/api/currency")
+public class CurrencyConversionController {
+	 @Autowired
+    private CurrencyConversionService conversionService;
+
+   
+    
+
+    @GetMapping("/convert")
+    public double convertCurrency(@RequestParam String fromCurrency,@RequestParam String toCurrency,@RequestParam double amount) throws CurrencyNotFoundException {
+        
+            double convertedAmount = conversionService.convertCurrency(fromCurrency, toCurrency, amount);
+            return convertedAmount;
+        } 
+    
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/update")
+    public String updateConversionRate(@RequestParam String fromCurrencyCode,@RequestParam String toCurrencyCode,@RequestParam double rate) {
+        conversionService.updateConversionRate(fromCurrencyCode, toCurrencyCode, rate);
+        return "Conversion rate updated successfully.";
+    }
+}

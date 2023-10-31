@@ -1,0 +1,104 @@
+package com.example.demo.controller;
+
+
+
+import com.example.demo.entities.Medicine;
+import com.example.demo.entities.Order;
+
+import com.example.demo.entities.MedicineNotFoundException;
+import com.example.demo.service.MedicineService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Set;
+
+@Controller
+public class MedicineController {
+	@Autowired
+    private  MedicineService medicineService;
+    @GetMapping("/allmedicine")
+    public String getAllMedicines(Model model) {
+        List<Medicine> medicines = medicineService.getAllMedicines();
+        model.addAttribute("medicines", medicines);
+        return "displayAllMedicines"; // Assuming "medicines" is the name of your HTML template
+    }
+    @GetMapping("/medicineid/{id}")
+    public String showMedicineIdForm(Model model) {
+        model.addAttribute("medicine", new Medicine());
+        return "MedicineIdForm";
+    }
+    
+    @PostMapping("/medicineid/{id}")
+    public String getMedicineById(@PathVariable String id, Model model) {
+        try {
+        	Long medicineId = Long.parseLong(id);
+            Medicine medicine = medicineService.getMedicineById(medicineId);
+            model.addAttribute("medicine", medicine);
+            return "medicineById"; // Assuming "medicine" is the name of your HTML template for displaying a single medicine
+        } catch (MedicineNotFoundException e) {
+            
+            return "error"; 
+        }
+    }
+
+    @GetMapping("/addmedicine")
+	public ModelAndView addMedicines() {
+		ModelAndView mv= new ModelAndView();
+		mv.addObject("medicines",new Medicine());
+		mv.setViewName("addMedicine");
+		return mv;
+	}
+
+    @PostMapping("/addmedicine")
+    @ResponseBody
+    public String addMedicine(@ModelAttribute Medicine medicine) {
+        medicineService.addMedicine(medicine);
+        return "redirect:/allmedicine/";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        try {
+            Medicine medicine = medicineService.getMedicineById(id);
+            model.addAttribute("medicine", medicine);
+            return "editMedicine"; // Assuming "editMedicine" is the name of your HTML form for editing a medicine
+        } catch (MedicineNotFoundException e) {
+            // Handle not found exception, e.g., redirect to an error page
+            return "error"; // Assuming "error" is the name of your error HTML template
+        }
+    }
+
+    @PostMapping("/{id}/edit")
+    public String updateMedicine(@PathVariable Long id, @ModelAttribute Medicine updatedMedicine) {
+        try {
+            medicineService.updateMedicine(id, updatedMedicine);
+            return "redirect:/medicines/";
+        } catch (MedicineNotFoundException e) {
+            // Handle not found exception, e.g., redirect to an error page
+            return "error"; // Assuming "error" is the name of your error HTML template
+        }
+    }
+
+    @GetMapping("/{id}/delete")
+    public String deleteMedicine(@PathVariable Long id) {
+        medicineService.deleteMedicine(id);
+        return "redirect:/medicines/";
+    }
+
+    @GetMapping("/{medicineId}/orders")
+    public String getOrdersForMedicine(@PathVariable Long medicineId, Model model) {
+        try {
+            Set<Order> orders = medicineService.getOrdersForMedicine(medicineId);
+            model.addAttribute("orders", orders);
+            return "medicineOrders"; // Assuming "medicineOrders" is the name of your HTML template for displaying orders associated with a medicine
+        } catch (MedicineNotFoundException e) {
+            // Handle not found exception, e.g., redirect to an error page
+            return "error"; // Assuming "error" is the name of your error HTML template
+        }
+    }
+}
+

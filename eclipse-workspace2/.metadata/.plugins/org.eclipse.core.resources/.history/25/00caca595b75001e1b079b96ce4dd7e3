@@ -1,0 +1,29 @@
+package com.example.demo.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entities.CurrencyConversion;
+import com.example.demo.repository.CurrencyConversionRepository;
+
+@Service
+public class CurrencyConversionService {
+	@Autowired
+    private  CurrencyConversionRepository conversionRateRepository;
+
+    
+
+    public double getConversionRate(String fromCurrencyCode, String toCurrencyCode) {
+    	CurrencyConversion conversionRate = conversionRateRepository.findByFromCurrencyCodeAndToCurrencyCode(fromCurrencyCode, toCurrencyCode);
+        return conversionRate != null ? conversionRate.getRate() : 1.0;
+    }
+
+    public void updateConversionRate(String fromCurrencyCode, String toCurrencyCode, double rate) {
+    	CurrencyConversion conversionRate = conversionRateRepository.findByFromCurrencyCodeAndToCurrencyCode(fromCurrencyCode, toCurrencyCode);
+        if (conversionRate != null) {
+            conversionRate.setRate(rate);
+            conversionRateRepository.save(conversionRate);
+        }
+    }
+}
+

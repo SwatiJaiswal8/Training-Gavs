@@ -1,0 +1,5 @@
+package comdemo.hibernate1.config;
+
+public class HibernateUtility {
+
+}

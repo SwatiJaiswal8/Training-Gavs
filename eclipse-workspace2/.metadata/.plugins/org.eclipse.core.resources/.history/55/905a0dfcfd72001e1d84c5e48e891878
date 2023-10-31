@@ -1,0 +1,5 @@
+package webmvcdemo;
+@Configration
+public class SpringConfigration {
+
+}

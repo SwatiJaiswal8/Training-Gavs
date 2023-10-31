@@ -1,0 +1,48 @@
+package com.example.demo.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entities.Currency;
+import com.example.demo.entities.CurrencyConversion;
+import com.example.demo.repository.CurrencyRepository;
+
+import java.util.List;
+
+@Service
+public class CurrencyService {
+	@Autowired
+    private CurrencyRepository repository;
+
+	public double getExchangeRate(String currencyCode) throws CurrencyNotFoundException {
+        CurrencyConversion currency = repository.findByCurrencyCode(currencyCode);
+        if (currency == null) {
+            throw new CurrencyNotFoundException("Currency not found.");
+        }
+        return currency.getRate();
+    }
+    /*public double getConversionRate(String fromCurrencyCode, String toCurrencyCode) {
+    	CurrencyConversion conversionRate = conversionRateRepository.findByFromCurrencyCodeAndToCurrencyCode(fromCurrencyCode, toCurrencyCode);
+        return conversionRate != null ? conversionRate.getRate() : 1.0;
+    }*/
+    public double convertCurrency(String fromCurrency, String toCurrency, double amount) throws CurrencyNotFoundException {
+        double fromExchangeRate = getExchangeRate(fromCurrency);
+        double toExchangeRate = getExchangeRate(toCurrency);
+
+        // Convert the amount from 'fromCurrency' to 'toCurrency'
+        double convertedAmount = (amount / fromExchangeRate) * toExchangeRate;
+
+        return convertedAmount;
+    }
+    
+
+    public List<Currency> getAllCurrencies() {
+        return repository.findAll();
+    }
+
+
+
+
+	
+    
+}

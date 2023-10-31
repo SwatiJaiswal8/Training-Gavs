@@ -1,0 +1,30 @@
+package com.model;
+ 
+public class Item {
+	private int productId;
+	
+	
+	public Item(int productId, int quality) {
+		super();
+		this.productId = productId;
+		this.quality = quality;
+	}
+	public int getProductId() {
+		return productId;
+	}
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+	public int getQuality() {
+		return quality;
+	}
+	public void setQuality(int quality) {
+		this.quality = quality;
+	}
+	private int quality;
+	public String toString() {
+		return "Item [productId=" + productId + ", quality=" + quality + "]";
+	}
+ 
+}
+ 

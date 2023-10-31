@@ -1,0 +1,39 @@
+package com.example.demo.controller;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+ 
+import com.example.demo.entities.Customer;
+
+import com.example.demo.service.CustomerService;
+import com.example.demo.service.MedicineService;
+ 
+@RestController
+@RequestMapping("/customer") // Base request mapping for the entire controller
+public class CustomerController {
+ 
+    @Autowired
+    CustomerService service;
+ 
+    @Autowired
+    MedicineService medservice;
+ 
+    
+    @PostMapping("/addCustomer")
+    public String addNewcustomer(@RequestBody Customer customer) {
+        double pricePerUnit = customer.getMedicine().getMedicinePrice();
+        int quantity = customer.getStock().getQuantity();
+        double calculatedPrice = pricePerUnit * quantity;
+        customer.setCalculatedPrice(calculatedPrice);
+        service.saveCustomer(customer);
+        return "customerBillingDone"; 
+    }
+}
+ 

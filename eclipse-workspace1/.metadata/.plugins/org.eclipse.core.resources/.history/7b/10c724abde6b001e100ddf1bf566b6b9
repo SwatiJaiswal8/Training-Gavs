@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>
+		Part Entry Form
+	</h1>
+<form action ="/ProductApp/ServletDatabase" method ="post">
+	Part Id:<input type="text" name ="partid" required/>
+	Part Name:<input type ="text" name ="partname"/>
+	color:<select name ="Color">
+		<option>Blue
+		</option>
+		<option>
+			Red
+		</option>
+		<option>Yellow</option>
+	</select>
+	</br>
+	<input type ="submt" value ="save"/>
+	<form>
+</form>
+</body>
+</html>

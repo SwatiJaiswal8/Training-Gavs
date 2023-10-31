@@ -1,0 +1,5 @@
+package comdemo.hibernate.entities;
+
+public class Products {
+
+}

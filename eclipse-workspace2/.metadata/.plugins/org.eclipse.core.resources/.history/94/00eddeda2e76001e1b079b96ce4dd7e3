@@ -1,0 +1,39 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Medicine</title>
+</head>
+<body>
+    <h1>Edit Medicine</h1>
+    
+    <form:form modelAttribute="medicine" method="post" action="/medicineid/{id}">
+        <form:hidden path="medicineId" />
+        
+        <div>
+            <label for="medicineName">Name:</label>
+            <form:input path="medicineName" id="medicineName" />
+        </div>
+        
+        <div>
+            <label for="medicineDescription">Description:</label>
+            <form:input path="medicineDescription" id="medicineDescription" />
+        </div>
+        
+        <div>
+            <label for="medicinePrice">Price:</label>
+            <form:input path="medicinePrice" id="medicinePrice" />
+        </div>
+        
+        <div>
+            <label for="manufacturerDate">Manufacturer Date:</label>
+            <form:input path="manufacturerDate" id="manufacturerDate" />
+        </div>
+        
+        <div>
+            <input type="submit" value="Update Medicine" />
+        </div>
+    </form:form>
+</body>
+</html>

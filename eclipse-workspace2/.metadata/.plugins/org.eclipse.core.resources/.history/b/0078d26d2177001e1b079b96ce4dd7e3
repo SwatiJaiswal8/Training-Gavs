@@ -1,0 +1,62 @@
+package com.example.demo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+ 
+import com.example.demo.entities.Customer;
+import com.example.demo.entities.Medicine;
+import com.example.demo.service.CustomerService;
+import com.example.demo.service.MedicineService;
+ 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+ 
+@Controller
+public class CustomerController {
+	
+	@Autowired
+    CustomerService service;
+     
+	@Autowired
+	MedicineService medservice;
+	
+	
+	
+	
+	@GetMapping("/addCustomer")
+    public String addCustomerForm(Model model) {
+		model.addAttribute("customer",new Customer());
+       
+        Iterable<Medicine> allMedicines=medservice.getAllMedicines();
+		model.addAttribute("medicines",allMedicines);
+		List<Medicine> medicineList = medservice.getAllMedicines(); // Assuming you have a service method to fetch all medicines
+        model.addAttribute("medicineList", medicineList);
+ 
+        return "addCustomer";
+    }
+ 
+    @PostMapping("/addCustomer")
+//    @ResponseBody
+    public String addNewcustomer(Customer customer) {
+    	double pricePerUnit = customer.getPrice();
+        int quantity = customer.getQuantity();
+        double calculatedPrice = pricePerUnit * quantity;
+ 
+        // Set the calculated price in the Customer object
+        customer.setCalculatedPrice(calculatedPrice);
+    	service.saveCustomer(customer);
+        return "customerBillingDone";
+    }
+    
+ 
+  
+ 
+    
+}
+ 

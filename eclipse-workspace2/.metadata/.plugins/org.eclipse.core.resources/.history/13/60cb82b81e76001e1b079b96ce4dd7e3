@@ -1,0 +1,34 @@
+package com.example.demo.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entities.Administrator;
+import com.example.demo.repository.AdministratorRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class AdministratorService {
+	@Autowired
+    private AdministratorRepository administratorRepository;
+
+    
+
+    public List<Administrator> getAllAdministrators() {
+        return administratorRepository.findAll();
+    }
+
+    public List<Administrator> getAdministratorById(Long id) {
+       return (List<Administrator>) administratorRepository.findById(id).get();
+      
+    }
+
+    public List<Administrator> getAdministratorByUsername(String SupplierName) {
+        return administratorRepository.findBySupplierName(SupplierName);
+    }
+
+    
+
+}

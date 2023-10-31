@@ -1,0 +1,48 @@
+package com.example.demo.entities;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+@Entity
+public class OutPatientDepartment {
+@Id
+//@GeneratedValue(strategy=GenerationType.IDENTITY)
+private int opdId;
+private String opdName;
+private String opdDiagnosis;
+public OutPatientDepartment() {
+}
+public OutPatientDepartment(int opdId, String opdName, String opdDiagnosis) {
+	super();
+	this.opdId = opdId;
+	this.opdName = opdName;
+	this.opdDiagnosis = opdDiagnosis;
+}
+public int getId() {
+	return opdId;
+}
+public void setId(int opdId) {
+	this.opdId = opdId;
+}
+public String getName() {
+	return opdName;
+}
+public void setName(String opdName) {
+	this.opdName = opdName;
+}
+public String getDiagnosis() {
+	return opdName;
+}
+public void setDiagnosis(String opdDiagnosis) {
+	this.opdName = opdDiagnosis;
+}
+@Override
+public String toString() {
+	return "OutPatientDepartment [id=" + opdId + ", name=" + opdName + ", diagnosis=" + opdName + "]";
+}
+
+
+
+
+}

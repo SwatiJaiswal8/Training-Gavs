@@ -1,0 +1,36 @@
+package com.example.demo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import com.example.demo.entities.Customer;
+import com.example.demo.entities.Medicine;
+import com.example.demo.service.CustomerService;
+import com.example.demo.service.MedicineService;
+
+
+
+@RestController
+@RequestMapping("/api/customers")
+public class CustomerController {
+
+    @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private MedicineService medicineService;
+
+    @GetMapping("/addCustomer")
+    public Iterable<Medicine> addCustomerForm() {
+        return medicineService.getAllMedicines();
+    }
+
+    @PostMapping("/addCustomer")
+    public String addNewCustomer(@RequestBody Customer customer) {
+        double pricePerUnit = customer.getPrice();
+        int quantity = customer.getQuantity();
+        double calculatedPrice = pricePerUnit * quantity;
+        customer.setCalculatedPrice(calculatedPrice);
+        customerService.saveCustomer(customer);
+        return "Customer added successfully!";
+    }
+}

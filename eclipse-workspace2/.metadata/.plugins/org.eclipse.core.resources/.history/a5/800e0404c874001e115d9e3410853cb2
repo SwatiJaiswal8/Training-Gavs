@@ -1,0 +1,40 @@
+package com.example.demo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import com.example.demo.entities.Administrator;
+import com.example.demo.service.AdministratorService;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/administrators")
+public class AdministratorController {
+	 @Autowired
+    private  AdministratorService administratorService;
+
+    
+
+    @GetMapping("/allAdm")
+    public List<Administrator>getAdministrators() {
+        return administratorService.getAllAdministrators();
+        
+    }
+
+    @GetMapping("allAdministrators/{id}")
+    public String getAdministratorById(@PathVariable("id")s Long id) {
+         return administratorService.getAdministratorById(id);
+         
+    }
+
+    @GetMapping("/byAdministratorName")
+    public ResponseEntity<Administrator> getAdministratorByUsername(@RequestParam String administartorName) {
+        Administrator administrator = administratorService.getAdministratorByUsername(administartorName);
+        if (administrator != null) {
+            return ResponseEntity.ok(administrator);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+}

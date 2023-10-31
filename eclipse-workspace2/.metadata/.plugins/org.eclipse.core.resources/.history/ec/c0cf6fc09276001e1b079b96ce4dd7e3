@@ -1,0 +1,54 @@
+package com.example.demo.controller;
+
+import com.example.demo.entities.Medicine;
+import com.example.demo.entities.Order;
+import com.example.demo.entities.MedicineNotFoundException;
+import com.example.demo.service.MedicineService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
+
+@RestController
+@RequestMapping("/api/medicines")
+public class MedicineController {
+
+    @Autowired
+    private MedicineService medicineService;
+
+    @GetMapping
+    public List<Medicine> getAllMedicines() {
+        return medicineService.getAllMedicines();
+    }
+
+    @GetMapping("/{id}")
+    public Medicine getMedicineById(@PathVariable Long id) throws MedicineNotFoundException {
+        return medicineService.getMedicineById(id);
+    }
+
+    @PostMapping
+    public void addMedicine(@RequestBody Medicine medicine) {
+        medicineService.addMedicine(medicine);
+    }
+
+    @PutMapping("/{id}")
+    public void updateMedicine(@PathVariable Long id, @RequestBody Medicine medicine) throws MedicineNotFoundException {
+        Medicine existingMedicine = medicineService.getMedicineById(id);
+        existingMedicine.setMedicineName(medicine.getMedicineName());
+        existingMedicine.setMedicineDescription(medicine.getMedicineDescription());
+        existingMedicine.setMedicinePrice(medicine.getMedicinePrice());
+        existingMedicine.setManufacturerDate(medicine.getManufacturerDate());
+        medicineService.updateMedicine(existingMedicine);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteMedicineById(@PathVariable Long id) throws MedicineNotFoundException {
+        medicineService.deleteMedicine(id);
+    }
+
+    @GetMapping("/{medicineId}/orders")
+    public Set<Order> getOrdersForMedicine(@PathVariable Long medicineId) throws MedicineNotFoundException {
+        return medicineService.getOrdersForMedicine(medicineId);
+    }
+}

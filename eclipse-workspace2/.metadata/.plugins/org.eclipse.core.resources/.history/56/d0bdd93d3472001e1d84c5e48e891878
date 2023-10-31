@@ -1,0 +1,5 @@
+package comdemo.hibernate.entities.Category;
+
+public class Category {
+
+}

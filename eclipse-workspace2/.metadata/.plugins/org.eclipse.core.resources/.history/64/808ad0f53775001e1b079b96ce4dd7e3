@@ -1,0 +1,67 @@
+package com.example.demo.controller;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.model.Administrator;
+import com.example.demo.model.OrderDTO;
+import com.example.demo.model.OrderManagement;
+import com.example.demo.repository.AdministratorRepository;
+import com.example.demo.service.OrderService;
+@RestController
+@RequestMapping("/apiOrder")
+public class OrderController {
+	@Autowired
+    private  OrderService orderService;
+	private AdministratorRepository rep;
+    
+    
+
+    @PostMapping("/createOrder")
+    @ResponseBody
+    public String createOrder(@RequestBody OrderDTO orderDTO,@RequestParam Long administratorId) {
+    		Administrator administrator = rep.getById(administratorId);
+    		OrderManagement createdOrder1 = orderService.createOrder(orderDTO, administrator);
+    		return "Order is Created";
+}
+
+    
+    /*public String createOrder(@RequestBody OrderDTO orderDTO) {
+        
+            orderService.createOrder(orderDTO);
+            return "Order created successfully.";
+       
+    }*/
+    
+
+    @PutMapping("/updateOrder/{orderId}")
+    public String updateOrder(@PathVariable Long orderId, @RequestBody OrderDTO orderDTO) {
+        try {
+            orderService.updateOrder(orderId, orderDTO);
+            return "Order updated successfully.";
+        } catch (RuntimeException e) {
+            return e.getMessage();
+        }
+    }
+
+    @DeleteMapping("/cancelOrder/{orderId}")
+    public ResponseEntity<String> cancelOrder(@PathVariable Long orderId) {
+        try {
+            orderService.cancelOrder(orderId);
+            return ResponseEntity.ok("Order canceled successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/allOrder")
+    public List<OrderManagement> getAllOrders() {
+    	 return orderService.getAllOrders();
+       
+    }
+    
+}
+

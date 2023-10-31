@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Conversion Data</title>
+    <style>
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Currency Conversion Data</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Currency Code</th>
+            <th>From Currency</th>
+            <th>To Currency</th>
+            <th>Rate</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>USD</td>
+            <td>US Dollar</td>
+            <td>Euro</td>
+            <td>0.85</td>
+        </tr>
+        <!-- Add more rows for each data entry -->
+    </table>
+</body>
+
+</html>

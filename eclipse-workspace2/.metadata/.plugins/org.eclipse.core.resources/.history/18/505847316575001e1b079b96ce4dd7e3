@@ -1,0 +1,42 @@
+package com.example.demo.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.demo.entities.CurrencyConversion;
+import com.example.demo.repository.CurrencyConversionRepository;
+
+@Service
+public class CurrencyConversionService {
+	@Autowired
+    private  CurrencyConversionRepository repository;
+
+   
+	@GetMapping("/exchangeRate")
+    public double getExchangeRate(@RequestParam String currencyCode) throws CurrencyNotFoundException {
+        return currencyService.getExchangeRate(currencyCode);
+    }
+
+
+    public void updateConversionRate(String fromCurrencyCode, String toCurrencyCode, double rate) {
+    	CurrencyConversion conversionRate = repository.findByFromCurrencyCodeAndToCurrencyCode(fromCurrencyCode, toCurrencyCode);
+        if (conversionRate != null) {
+            conversionRate.setRate(rate);
+            repository.save(conversionRate);
+        }
+    }
+    public List<CurrencyConversion> getAllCurrecyConversion(){
+    	List<CurrencyConversion> cur= new ArrayList<>();
+    	 repository.findAll().forEach(cur::add);
+    	 return cur;
+    }
+    
+
+	
+}
+

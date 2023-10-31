@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Currency Exchange App</title>
+  </head>
+  <body>
+    <h1>Currency Exchange App</h1>
+ 
+    <h2>Admin Panel</h2>
+    <button onclick="goToAddPage()">Add Exchange Rate</button>
+ 
+    <h2>Convert Rates</h2>
+    <div>
+      <label for="sourceCurrency">Source Currency:</label>
+      <input type="text" id="sourceCurrency" placeholder="INR" />
+    </div>
+    <div>
+      <label for="targetCurrency">Target Currency:</label>
+      <input type="text" id="targetCurrency" placeholder="EUR" />
+    </div>
+    <button onclick="convertRates()">Convert</button>
+    <div id="conversionResult"></div>
+ 
+    <h2>Get Exchange Rate by ID</h2>
+    <div>
+      <label for="exchangeRateId">Exchange Rate ID:</label>
+      <input type="number" id="exchangeRateId" placeholder="1" />
+    </div>
+    <button onclick="getExchangeRateById()">Get Exchange Rate</button>
+    <div id="exchangeRateInfo"></div>
+ 
+    <script>
+      function goToAddPage() {
+        window.location.href = "add_exchange_rate.html"; // Create a separate HTML file for adding exchange rates
+      }
+ 
+      function convertRates() {
+        const sourceCurrency = document.getElementById("sourceCurrency").value;
+        const targetCurrency = document.getElementById("targetCurrency").value;
+ 
+        fetch(
+          `http://localhost:8080/exchange-rates/convert?sourceCurrency=${sourceCurrency}&targetCurrency=${targetCurrency}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Converted rate:", data);
+            // Display the conversion result in the "conversionResult" div
+            document.getElementById(
+              "conversionResult"
+            ).innerHTML = `1 ${sourceCurrency} = ${data.convertedRate} ${targetCurrency}`;
+          })
+          .catch((error) => {
+            console.error("Error converting rates:", error);
+            // Handle errors or display an error message
+          });
+      }
+ 
+      function getExchangeRateById() {
+        const exchangeRateId = parseInt(
+          document.getElementById("exchangeRateId").value
+        );
+ 
+        fetch(`http://localhost:8088/exchange-rates/${exchangeRateId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Exchange rate by ID:", data);
+            // Display the exchange rate information in the "exchangeRateInfo" div
+            document.getElementById("exchangeRateInfo").innerHTML =
+              JSON.stringify(data, null, 2);
+          })
+          .catch((error) => {
+            console.error("Error getting exchange rate by ID:", error);
+            // Handle errors or display an error message
+          });
+      }
+    </script>
+  </body>
+</html>
+ 

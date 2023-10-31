@@ -1,0 +1,98 @@
+package com.example.demo.entities;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+
+@Entity
+public class Medicine {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long medicineId;
+    private String medicineName;
+    private String medicineDescription;
+    private double medicinePrice;
+    private String manufacturerDate;
+
+    @ManyToMany(mappedBy = "medicines")
+    private Set<Order> orders = new HashSet<>();
+
+    
+    public Medicine() {
+    }
+
+    public Medicine(String medicineName, String medicineDescription, double medicinePrice, String manufacturerDate) {
+        this.medicineName = medicineName;
+        this.medicineDescription = medicineDescription;
+        this.medicinePrice = medicinePrice;
+        this.manufacturerDate = manufacturerDate;
+    }
+
+    
+
+   
+    public Long getMedicineId() {
+		return medicineId;
+	}
+
+	public void setMedicineId(Long medicineId) {
+		this.medicineId = medicineId;
+	}
+
+	public String getMedicineName() {
+		return medicineName;
+	}
+
+	public void setMedicineName(String medicineName) {
+		this.medicineName = medicineName;
+	}
+
+	public String getMedicineDescription() {
+		return medicineDescription;
+	}
+
+	public void setMedicineDescription(String medicineDescription) {
+		this.medicineDescription = medicineDescription;
+	}
+
+	public double getMedicinePrice() {
+		return medicinePrice;
+	}
+
+	public void setMedicinePrice(double medicinePrice) {
+		this.medicinePrice = medicinePrice;
+	}
+
+	public String getManufacturerDate() {
+		return manufacturerDate;
+	}
+
+	public void setManufacturerDate(String manufacturerDate) {
+		this.manufacturerDate = manufacturerDate;
+	}
+
+	public Set<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Set<Order> orders) {
+		this.orders = orders;
+	}
+
+	@Override
+    public String toString() {
+        return "Medicine{" +
+                "id=" + medicineId +
+                ", name='" + medicineName + '\'' +
+                ", description='" + medicineDescription + '\'' +
+                ", price=" + medicinePrice +
+                ", manufacturer='" + manufacturerDate + '\'' +
+                '}';
+    }
+}
+

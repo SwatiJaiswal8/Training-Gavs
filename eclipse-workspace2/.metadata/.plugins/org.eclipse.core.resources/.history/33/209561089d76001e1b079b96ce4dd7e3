@@ -1,0 +1,51 @@
+package com.example.demo.controller;
+import com.example.demo.entities.MedicineNotFoundException;
+import com.example.demo.entities.Order;
+import com.example.demo.entities.OrderNotFoundException;
+import com.example.demo.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/orders")
+public class OrderController {
+
+    @Autowired
+    private OrderService orderService;
+
+    @GetMapping("/allorder")
+    public Iterable<Order> getAllOrders() {
+        return orderService.getAllOrders();
+    }
+
+    @GetMapping("/orderById/{id}")
+    public Order getOrderById(@PathVariable Long id) throws OrderNotFoundException {
+        return orderService.getOrderById(id);
+    }
+
+    @PostMapping("/createOrder")
+    public Order createOrder(@RequestBody Order order) {
+        return orderService.createOrder(order);
+    }
+
+    @PutMapping("/updateOrder/{id}")
+    public void updateOrder(@PathVariable Long id, @RequestBody Order updatedOrder) throws OrderNotFoundException {
+        orderService.updateOrder(id, updatedOrder);
+    }
+
+    @DeleteMapping("/deleteOrder/{id}")
+    public void deleteOrder(@PathVariable Long id) {
+        orderService.deleteOrder(id);
+    }
+
+    @PostMapping("/{orderId}/addMedicine/{medicineId}")
+    public void addMedicineToOrder(@PathVariable Long orderId, @PathVariable Long medicineId) throws OrderNotFoundException, MedicineNotFoundException {
+        orderService.addMedicineToOrder(orderId, medicineId);
+    }
+
+    @PostMapping("/{orderId}/removeMedicine/{medicineId}")
+    public void removeMedicineFromOrder(@PathVariable Long orderId, @PathVariable Long medicineId) throws OrderNotFoundException, MedicineNotFoundException {
+        orderService.removeMedicineFromOrder(orderId, medicineId);
+    }
+}
+

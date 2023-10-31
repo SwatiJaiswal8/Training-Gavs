@@ -1,0 +1,39 @@
+package com.example.demo.controller;
+
+import com.example.demo.entities.MedicineNotFoundException;
+import com.example.demo.service.StockService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+@RestController
+@RequestMapping("/api/stocks")
+public class StockController {
+
+    @Autowired
+    private StockService stockService;
+
+    @PostMapping("/addMedicineToStock")
+    public ResponseEntity<String> addMedicineToStock(@RequestParam Long medicineId, @RequestParam int quantity, @RequestParam String expirationDate) {
+        try {
+            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(expirationDate);
+            stockService.addMedicineToStock(medicineId, quantity, date1);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Medicine added to stock successfully.");
+        } catch (MedicineNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Medicine not found.");
+        } catch (ParseException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid date format. Please use yyyy-MM-dd.");
+        }
+    }
+
+    @DeleteMapping("/remove/expired")
+    public ResponseEntity<String> removeExpiredMedicine() {
+        stockService.removeExpiredMedicine();
+        return ResponseEntity.status(HttpStatus.OK).body("Expired medicines removed successfully.");
+    }
+}

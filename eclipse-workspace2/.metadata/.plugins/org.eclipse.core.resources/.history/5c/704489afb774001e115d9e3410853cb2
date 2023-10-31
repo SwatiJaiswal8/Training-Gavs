@@ -1,0 +1,57 @@
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.entities.OrderManagement;
+import com.example.demo.service.OrderService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/orders")
+public class OrderController {
+    private final OrderService orderService;
+
+    @Autowired
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDTO) {
+        try {
+            orderService.createOrder(orderDTO);
+            return ResponseEntity.ok("Order created successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/update/{orderId}")
+    public ResponseEntity<String> updateOrder(@PathVariable Long orderId, @RequestBody OrderDTO orderDTO) {
+        try {
+            orderService.updateOrder(orderId, orderDTO);
+            return ResponseEntity.ok("Order updated successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/cancel/{orderId}")
+    public ResponseEntity<String> cancelOrder(@PathVariable Long orderId) {
+        try {
+            orderService.cancelOrder(orderId);
+            return ResponseEntity.ok("Order canceled successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<OrderManagement>> getAllOrders() {
+        List<OrderManagement> orders = orderService.getAllOrders();
+        return ResponseEntity.ok(orders);
+    }
+    
+}

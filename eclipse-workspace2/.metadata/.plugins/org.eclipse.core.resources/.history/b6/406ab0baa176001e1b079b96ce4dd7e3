@@ -1,0 +1,22 @@
+package com.example.demo.entities;
+
+
+import java.util.Date;
+
+@Entity
+public class Stock {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "medicine_id", nullable = false)
+    private Medicine medicine;
+
+    private int quantity;
+    private double price;
+    private Date expirationDate;
+
+    // Constructors, getters, and setters
+}
+

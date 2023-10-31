@@ -1,0 +1,121 @@
+package com.example.demo.entities;
+
+import java.sql.Date;
+
+ 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
+import jakarta.persistence.ManyToOne;
+
+ 
+@Entity
+public class Customer {
+    @Id
+    private int custId;
+ 
+    private String custName;
+    private String phoneNumber;
+    private double price;
+    private Date date;
+    private double calculatedPrice;
+ 
+    @ManyToOne
+    @JoinColumn(name = "quantity", referencedColumnName="quantity", nullable = false)
+    private Stock stock;
+    @ManyToOne
+    @JoinColumn(name = "medicine_name", referencedColumnName="medicineName", nullable = false)
+    private Medicine medicine;
+    public Customer() {
+    }
+ 
+	public Customer(int custId, String custName, String phoneNumber, Medicine medicine,  Stock stock, 
+			Date date, double price,double calculatedPrice) {
+		super();
+		this.custId = custId;
+		this.custName = custName;
+		this.phoneNumber = phoneNumber;
+		this.medicine = medicine;
+		this.stock=stock;
+		this.price=price;
+		this.date = date;
+		this.calculatedPrice=calculatedPrice;
+	}
+
+	public int getCustId() {
+		return custId;
+	}
+
+	public void setCustId(int custId) {
+		this.custId = custId;
+	}
+
+	public String getCustName() {
+		return custName;
+	}
+
+	public void setCustName(String custName) {
+		this.custName = custName;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public double getCalculatedPrice() {
+		return calculatedPrice;
+	}
+
+	public void setCalculatedPrice(double calculatedPrice) {
+		this.calculatedPrice = calculatedPrice;
+	}
+
+	public Stock getStock() {
+		return stock;
+	}
+
+	public void setStock(Stock stock) {
+		this.stock = stock;
+	}
+
+	public Medicine getMedicine() {
+		return medicine;
+	}
+
+	public void setMedicine(Medicine medicine) {
+		this.medicine = medicine;
+	}
+
+	@Override
+	public String toString() {
+		return "Customer [custId=" + custId + ", custName=" + custName + ", phoneNumber=" + phoneNumber 
+				 + ", price=" + price + ", date=" + date + ", calculatedPrice=" + calculatedPrice + ", stock="
+				+ stock + ", medicine=" + medicine + "]";
+	}
+ 
+	
+}
+	

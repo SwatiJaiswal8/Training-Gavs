@@ -1,0 +1,16 @@
+
+public class ValidateUser {
+
+	public boolean isvalidateUser(String username,String password) {
+		// TODO Auto-generated method stub
+		if(username.equals("tester") && password.equals("tester")) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+
+	}
+
+}

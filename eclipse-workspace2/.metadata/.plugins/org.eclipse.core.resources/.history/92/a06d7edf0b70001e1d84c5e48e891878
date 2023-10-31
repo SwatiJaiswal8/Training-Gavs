@@ -1,0 +1,5 @@
+package comdemo.hibernate.entities.Address;
+
+public class Address {
+
+}

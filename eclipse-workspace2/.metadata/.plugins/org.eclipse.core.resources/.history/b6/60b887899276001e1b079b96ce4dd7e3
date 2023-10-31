@@ -1,0 +1,121 @@
+package com.example.demo.controller;
+
+
+
+import com.example.demo.entities.Medicine;
+import com.example.demo.entities.Order;
+
+import com.example.demo.entities.MedicineNotFoundException;
+import com.example.demo.service.MedicineService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Set;
+
+@Controller
+public class MedicineController {
+	@Autowired
+    private  MedicineService medicineService;
+    @GetMapping("/allmedicine")
+    public String getAllMedicines(Model model) {
+        List<Medicine> medicines = medicineService.getAllMedicines();
+        model.addAttribute("medicines", medicines);
+        return "displayAllMedicines"; }
+    @GetMapping("/medicineid/{id}")
+    public String showMedicineIdForm(Model model) {
+        model.addAttribute("medicine", new Medicine());
+        return "MedicineIdForm";
+    }
+    
+    @PostMapping("/medicineid/{id}")
+    public String getMedicineById(@PathVariable String id, Model model) {
+        try {
+        	Long medicineId = Long.parseLong(id);
+            Medicine medicine = medicineService.getMedicineById(medicineId);
+            model.addAttribute("medicine", medicine);
+            return "medicineById"; 
+        } catch (MedicineNotFoundException e) {
+            
+            return "error"; 
+        }
+    }
+
+    @GetMapping("/addmedicine")
+	public ModelAndView addMedicines() {
+		ModelAndView mv= new ModelAndView();
+		mv.addObject("medicines",new Medicine());
+		mv.setViewName("addMedicine");
+		return mv;
+	}
+
+    @PostMapping("/addmedicine")
+  
+    public String addMedicine(@ModelAttribute Medicine medicine) {
+        medicineService.addMedicine(medicine);
+        return "redirect:/listofmedicine";
+    }
+    @RequestMapping("/listofmedicine")
+    public String listMedicine(Model model) {
+    	List<Medicine> medicines = medicineService.getAllMedicines();
+        model.addAttribute("medicines", medicines);
+        return "displayAllMedicines";
+    }
+
+    
+    @GetMapping("/edit")
+	public String showEditForm(Model model) throws MedicineNotFoundException {
+    	
+		Iterable<Medicine> medicines=medicineService.getAllMedicines();
+		model.addAttribute("medicines",medicines);
+		model.addAttribute("medicine",new Medicine());
+		return "editMedicine";
+    	
+    	
+	}
+    @PostMapping("/edit")
+    public String updateMedicine(@PathVariable String id, @ModelAttribute Medicine medicine) throws MedicineNotFoundException {
+    	Long medicineId = Long.parseLong(id);
+    	Medicine existingMedicine = medicineService.getMedicineById(medicineId);
+
+      
+        existingMedicine.setMedicineName(medicine.getMedicineName());
+        existingMedicine.setMedicineDescription(medicine.getMedicineDescription());
+        existingMedicine.setMedicinePrice(medicine.getMedicinePrice());
+        existingMedicine.setManufacturerDate(medicine.getManufacturerDate());
+            medicineService.updateMedicine(existingMedicine);
+            return "redirect:/listofmedicines";
+        
+    }
+
+    @GetMapping("/delete/{id}")
+    public String showDeleteForm( Model model) {
+        model.addAttribute("medicine", new Medicine());
+        return "deleteMedicine"; 
+    }
+    
+   
+
+    @PostMapping("/delete/{id}")
+    public String deleteMedicineById(@PathVariable String id,Model model) throws MedicineNotFoundException {
+    	
+    	Long medicineId = Long.parseLong(id);
+    	 medicineService.deleteMedicine(medicineId); 
+		return "listofmedicine"; 
+    }
+    @GetMapping("/{medicineId}/orders")
+    public String getOrdersForMedicine(@PathVariable Long medicineId, Model model) {
+        try {
+            Set<Order> orders = medicineService.getOrdersForMedicine(medicineId);
+            model.addAttribute("orders", orders);
+            return "medicineOrders"; 
+        } catch (MedicineNotFoundException e) {
+            
+            return "error"; 
+        }
+    }
+}
+

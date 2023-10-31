@@ -1,0 +1,33 @@
+package com.example.demo.controller;
+import com.example.demo.entities.MedicineNotFoundException;
+import com.example.demo.service.StockService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.Date;
+
+@RestController
+@RequestMapping("/api/stocks")
+public class StockController {
+	
+	@Autowired
+	private StockService stockService;
+
+    @PostMapping("/addMedicineToStock/{medicineId}")
+    public ResponseEntity<String> addMedicineToStock(@PathVariable Long medicineId, @RequestParam int quantity,@RequestParam Date expirationDate) {
+        try {
+            stockService.addMedicineToStock(medicineId, quantity, expirationDate);
+            return ResponseEntity.ok("Medicine added to stock successfully.");
+        } catch (MedicineNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/remove/expired")
+    public ResponseEntity<String> removeExpiredMedicine() {
+        stockService.removeExpiredMedicine();
+        return ResponseEntity.ok("Expired medicines removed from stock successfully.");
+    }
+}
+

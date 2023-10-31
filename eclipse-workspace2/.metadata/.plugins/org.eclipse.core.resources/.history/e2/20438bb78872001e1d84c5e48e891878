@@ -1,0 +1,34 @@
+package com.example.demo;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import com.example.demo.entities.Account;
+
+import com.example.demo.repository.AccountRepository;
+
+
+@SpringBootApplication
+public class SpringJpaAssignmentApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringJpaAssignmentApplication.class, args);
+	}
+	@Bean
+	public CommandLineRunner demo(AccountRepository repository) {
+		return(args)->{
+			repository.save(new Account("465768789",768875));
+			repository.save(new Account("897675653",908875));
+			repository.save(new Account("465435647",238875));
+			 Account myPrd=repository.findById().get();
+			
+			
+			
+			
+			
+		};
+	}
+
+}

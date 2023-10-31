@@ -1,0 +1,5 @@
+package comdemo.hibernate.enitites.perfume;
+
+public class Perfume {
+
+}

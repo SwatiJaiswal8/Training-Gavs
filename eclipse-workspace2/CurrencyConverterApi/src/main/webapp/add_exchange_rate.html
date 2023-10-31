@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Exchange Rate</title>
+</head>
+<body>
+    <h1>Add Exchange Rate</h1>
+ 
+    <div>
+        <label for="sourceCurrency">Source Currency:</label>
+        <input type="text" id="sourceCurrency" placeholder="INR">
+    </div>
+    <div>
+        <label for="targetCurrency">Target Currency:</label>
+        <input type="text" id="targetCurrency" placeholder="EUR">
+    </div>
+    <div>
+        <label for="exchangeRate">Exchange Rate:</label>
+        <input type="number" id="exchangeRate" placeholder="100">
+    </div>
+    <div>
+        <label for="effectiveDate">Effective Date:</label>
+        <input type="date" id="effectiveDate" placeholder="2023-05-01">
+    </div>
+    <button onclick="addExchangeRate()">Add Exchange Rate</button>
+ 
+    <div id="resultMessage"></div>
+ 
+    <script>
+        function addExchangeRate() {
+            const sourceCurrency = document.getElementById("sourceCurrency").value;
+            const targetCurrency = document.getElementById("targetCurrency").value;
+            const exchangeRate = parseFloat(document.getElementById("exchangeRate").value);
+            const effectiveDate = document.getElementById("effectiveDate").value;
+ 
+            const newExchangeRate = {
+                id: 9,
+                sourceCurrency: sourceCurrency,
+                targetCurrency: targetCurrency,
+                exchangeRate: exchangeRate,
+                effectiveDate: effectiveDate,
+            };
+ 
+            fetch('http://localhost:8088/exchange-rates/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newExchangeRate),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Exchange rate added:', data);
+                // Display the result message or details of the added exchange rate
+                document.getElementById("resultMessage").innerHTML = `Exchange rate added: ${JSON.stringify(data)}`;
+            })
+            .catch(error => {
+                console.error('Error adding exchange rate:', error);
+                // Handle errors or display an error message
+                document.getElementById("resultMessage").innerHTML = `Error adding exchange rate: ${error}`;
+            });
+        }
+    </script>
+</body>
+</html>
+ 

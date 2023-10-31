@@ -1,0 +1,40 @@
+package com.example.demo.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entities.Currency;
+import com.example.demo.repository.CurrencyRepository;
+
+import java.util.List;
+
+@Service
+public class CurrencyService {
+	@Autowired
+    private CurrencyRepository repository;
+
+	public double getExchangeRate(String currencyCode) throws CurrencyNotFoundException {
+        Currency currency = repository.findByCurrencyCode(currencyCode);
+        if (currency == null) {
+            throw new CurrencyNotFoundException("Currency not found.");
+        }
+        return currency.getAmount();
+    }
+    public double convertCurrency(String fromCurrency, String toCurrency, double amount) throws CurrencyNotFoundException {
+        double fromExchangeRate = getExchangeRate(fromCurrency);
+        double toExchangeRate = getExchangeRate(toCurrency);
+        double convertedAmount = (amount / fromExchangeRate) * toExchangeRate;
+        return convertedAmount;
+    }
+    
+
+    public List<Currency> getAllCurrencies() {
+        return repository.findAll();
+    }
+
+
+
+
+	
+    
+}

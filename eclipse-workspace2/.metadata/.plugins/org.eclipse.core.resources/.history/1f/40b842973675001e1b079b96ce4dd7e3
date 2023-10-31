@@ -1,0 +1,48 @@
+package com.example.demo.service;
+
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.model.Administrator;
+import com.example.demo.model.OrderDTO;
+import com.example.demo.model.OrderManagement;
+import com.example.demo.repository.AdministratorRepository;
+import com.example.demo.repository.OrderRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class OrderService {
+	@Autowired
+    private  OrderRepository orderRepository;
+	@Autowired
+    private  AdministratorRepository inventoryRepository;
+
+	public OrderManagement createOrder(OrderDTO orderDTO, Administrator administrator) {
+        OrderManagement order = new OrderManagement();
+        order.setAdministrator(administrator);
+        order.setOrderQuantity(orderDTO.getOrderQuantity());
+        order.setOrderDate(orderDTO.getOrderDate());
+        return orderRepository.save(order);
+    }
+	public OrderManagement updateOrder(Long orderId, OrderDTO orderDTO) {
+		OrderManagement existingOrder = orderRepository.findById(orderId).get();
+        existingOrder.setOrderQuantity(orderDTO.getOrderQuantity());
+        existingOrder.setOrderDate(orderDTO.getOrderDate());
+        return orderRepository.save(existingOrder);
+    }
+
+    public void cancelOrder(Long orderId) {
+        orderRepository.deleteById(orderId);
+       
+    }
+
+    public List<OrderManagement> getAllOrders() {
+        List<OrderManagement> od =(List<OrderManagement>) orderRepository.findAll();
+        return od;
+    }
+}
+

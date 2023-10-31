@@ -1,0 +1,5 @@
+package comdemo.hibernate.config;
+
+public class HibernateDemo {
+
+}

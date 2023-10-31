@@ -1,0 +1,67 @@
+package com.example.demo.service;
+
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.model.Administrator;
+
+import com.example.demo.model.OrderManagement;
+import com.example.demo.repository.AdministratorRepository;
+import com.example.demo.repository.OrderRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+
+@Service
+public class OrderService {
+	@Autowired
+    private  OrderRepository orderRepository;
+	@Autowired
+    private  AdministratorRepository inventoryRepository;
+
+	
+	
+	public void createOrder(OrderManagement order,Administrator adm) {
+        // Check if the medicines in the order are available in the required quantities
+		if(inventoryRepository.existsById(order.getOrderId())) {
+			
+			
+			if(adm.getQuantityInStock()>=order.getOrderQuantity())
+			{
+				Optional<OrderManagement> optionalMedicine=orderRepository.findById(order.getOrderId());
+				OrderManagement medicine = optionalMedicine.get();
+				order.setMedicineId(medicine);
+				order.setOrderDate(getOrderDate());
+				 orderRepository.save(order);
+				
+				
+			}
+				
+			}
+		}
+        
+	/*public String updateOrder(Long orderId, OrderDTO orderDTO) {
+		OrderManagement existingOrder = orderRepository.findById(orderId).get();
+        existingOrder.setOrderQuantity(orderDTO.getOrderQuantity());
+        existingOrder.setOrderDate(orderDTO.getOrderDate());
+        orderRepository.save(existingOrder);
+        return "Order updated successfully.";
+    }*/
+
+    public 	String cancelOrder(Long orderId) {
+        orderRepository.deleteById(orderId);
+       return "Order canceled successfully.";
+    }
+
+    public List<OrderManagement> getAllOrders() {
+    	List<OrderManagement> om=new ArrayList<OrderManagement>();
+    	orderRepository.findAll().forEach(om::add);
+    	return om;
+        
+    }
+}
+

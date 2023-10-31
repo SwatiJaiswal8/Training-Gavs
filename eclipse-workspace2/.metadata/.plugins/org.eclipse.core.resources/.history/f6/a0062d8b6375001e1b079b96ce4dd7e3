@@ -1,0 +1,16 @@
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/currency/getAll') // Replace this URL with your API endpoint
+        .then(response => response.json())
+        .then(data => {
+            const table = document.getElementById('currency-table');
+            data.forEach(entry => {
+                const row = table.insertRow();
+                row.insertCell().textContent = entry.id;
+                row.insertCell().textContent = entry.currencyCode;
+                row.insertCell().textContent = entry.fromCurrency.name;
+                row.insertCell().textContent = entry.toCurrency.name;
+                row.insertCell().textContent = entry.rate;
+            });
+        })
+        .catch(error => console.error('Error:', error));
+});

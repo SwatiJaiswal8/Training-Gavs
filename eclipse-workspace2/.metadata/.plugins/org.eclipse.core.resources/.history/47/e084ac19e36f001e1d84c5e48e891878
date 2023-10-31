@@ -1,0 +1,12 @@
+package comdemo.hibernate;
+
+import org.hibernate.SessionFactory;
+
+import comdemo.hibernate.config.HibernateDemo;
+ 
+public class App {
+  public static void main(String[] args) {
+    SessionFactory sessionFactory=HibernateDemo.getSessionFactoryObject();
+ 
+  }
+}

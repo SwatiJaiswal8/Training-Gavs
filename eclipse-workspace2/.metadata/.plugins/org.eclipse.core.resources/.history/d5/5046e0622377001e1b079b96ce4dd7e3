@@ -1,0 +1,114 @@
+package com.example.demo.entities;
+
+import java.sql.Date;
+
+ 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+ 
+@Entity
+public class Customer {
+    @Id
+    private int custId;
+ 
+    private String custName;
+    private String phoneNumber;
+    private String medicineName;
+    private int quantity;
+    private double price;
+    private Date date;
+    private double calculatedPrice;
+ 
+    public Customer() {
+    }
+ 
+	public Customer(int custId, String custName, String phoneNumber, String medicineName, int quantity, double price,
+			Date date,double calculatedPrice) {
+		super();
+		this.custId = custId;
+		this.custName = custName;
+		this.phoneNumber = phoneNumber;
+		this.medicineName = medicineName;
+		this.quantity = quantity;
+		this.price = price;
+		this.date = date;
+		this.calculatedPrice=calculatedPrice;
+	}
+ 
+	
+ 
+	public double getCalculatedPrice() {
+		return calculatedPrice;
+	}
+ 
+	public void setCalculatedPrice(double calculatedPrice) {
+		this.calculatedPrice = calculatedPrice;
+	}
+ 
+	public int getCustId() {
+		return custId;
+	}
+ 
+	public void setCustId(int custId) {
+		this.custId = custId;
+	}
+ 
+	public String getCustName() {
+		return custName;
+	}
+ 
+	public void setCustName(String custName) {
+		this.custName = custName;
+	}
+ 
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+ 
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+ 
+	public String getMedicineName() {
+		return medicineName;
+	}
+ 
+	public void setMedicineName(String medicineName) {
+		this.medicineName = medicineName;
+	}
+ 
+	public int getQuantity() {
+		return quantity;
+	}
+ 
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+ 
+	public double getPrice() {
+		return price;
+	}
+ 
+	public void setPrice(double price) {
+		this.price = price;
+	}
+ 
+	public Date getDate() {
+		return date;
+	}
+ 
+	public void setDate(Date date) {
+		this.date = date;
+	}
+ 
+	@Override
+	public String toString() {
+		return "Customer [custId=" + custId + ", custName=" + custName + ", phoneNumber=" + phoneNumber
+				+ ", medicineName=" + medicineName + ", quantity=" + quantity + ", price=" + price + ", date=" + date
+				+ ", calculatedPrice=" + calculatedPrice + "]";
+	}
+ 
+    
+
+}
+ 

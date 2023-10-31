@@ -1,0 +1,21 @@
+<%@page import="com.example.demo.model.Product" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" import="java.util.List"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<h2>Product Details</h2>
+<%List<Product> list =(List<Product>)request.getAttribute("dispalyList") ;%>
+<table><tr><td>ProductId</td><td>ProductName</td><td>ProductPrice</td></tr>
+<%for(Product p:list ) {%>
+<tr><td><%= p.getPrdId()%></td>
+<td><%= p.getPrdName()%></td>
+<td><%= p.getPrdPrice()%></td></tr>
+<%} %>
+</table>
+</body>
+</html>

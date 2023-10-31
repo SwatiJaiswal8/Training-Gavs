@@ -1,0 +1,24 @@
+package com.example.demo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.example.demo.entities.OutPatientDepartment;
+import com.example.demo.service.OutPatientDepartmentService;
+
+@Controller
+public class OutPatientDepartmentController {
+	@Autowired
+	OutPatientDepartmentService opds;
+	@GetMapping("/opd")
+	public String opdAddAndDisplay(Model model) {
+		Iterable<OutPatientDepartment> opd=opds.getAllPatients();
+		model.addAttribute("patients",opd );
+		model.addAttribute("newPatient", new OutPatientDepartment());
+		return "opd";
+	}
+	
+
+}
